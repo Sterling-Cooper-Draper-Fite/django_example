@@ -17,3 +17,11 @@ python manage.py migrate
 # start the django server
 python manage.py runserver
 ```
+
+## Tools
+
+* black - auto formatter
+* flake8 - linting
+* mypy - type checking
+* pytest - unit test framework
+* poetry - dependency management
