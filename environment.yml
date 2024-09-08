@@ -1,0 +1,8 @@
+name: django-example
+channels:
+  - defaults
+dependencies:
+  - python=3.12.4
+  - pip=24.2 # Include pip so it can install packages from requirements.txt
+  - pip:
+      - -r requirements.txt # Reference to requirements.txt
