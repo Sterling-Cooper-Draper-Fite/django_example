@@ -16,6 +16,12 @@ python manage.py migrate
 
 # start the django server
 python manage.py runserver
+
+# run linter
+flake8 .
+
+# check formatting
+black --check .
 ```
 
 ## Tools
