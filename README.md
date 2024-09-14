@@ -22,6 +22,9 @@ flake8 .
 
 # check formatting
 black --check .
+
+# check imports
+isort --check .
 ```
 
 ## Tools
@@ -31,3 +34,4 @@ black --check .
 * mypy - type checking
 * pytest - unit test framework
 * poetry - dependency management
+* isort - sorting imports
