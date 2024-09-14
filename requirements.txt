@@ -19,3 +19,5 @@ Django
 django-celery-beat
 django-celery-results
 redis
+django-storages
+boto3
