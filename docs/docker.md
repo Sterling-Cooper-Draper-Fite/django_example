@@ -23,4 +23,5 @@ docker compose up
 
 # run management tasks
 docker compose run server python manage.py migrate
+docker compose run server python manage.py createsuperuser
 ```

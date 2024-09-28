@@ -10,7 +10,8 @@ conda env update --file environment.yml --prune
 conda activate django-example
 
 # set required environment variables
-conda env config vars set AWS_STORAGE_BUCKET_NAME=django-example
+conda env config vars set AWS_STORAGE_BUCKET_NAME=my-bucket-name
+conda env config vars set AWS_JOB_QUEUE_URL=my-queue-url
 conda activate django-example
 
 # run database migrations
