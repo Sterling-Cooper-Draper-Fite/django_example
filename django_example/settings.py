@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -84,12 +86,11 @@ WSGI_APPLICATION = "django_example.wsgi.application"
 # ==============================
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# Load environment variables
+DATABASE_URL = os.environ["DATABASE_URL"]
+
+# Database configuration
+DATABASES = {"default": dj_database_url.config(default=DATABASE_URL)}
 
 
 # ==============================
@@ -146,14 +147,29 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ==============================
 # Celery Configuration
 # ==============================
+
+# AWS SQS settings
+AWS_JOB_QUEUE_URL = os.environ["AWS_JOB_QUEUE_URL"]
+
+CELERY_BROKER_URL = "sqs://"
+
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    "polling_interval": 10,  # Polling interval in seconds
+    "visibility_timeout": 3600,  # Visibility timeout in seconds
+    "queue_url": AWS_JOB_QUEUE_URL,
+}
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "UTC"
+
+
 # save Celery task results in Django's database
 CELERY_RESULT_BACKEND = "django-db"
 
 # broker_connection_retry_on_startup
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-
-# This configures Redis as the datastore between Django + Celery
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_REDIS_URL", "redis://localhost:6379")
 
 # this allows you to schedule items in the Django admin.
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
@@ -164,17 +180,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 # ==============================
 
 # AWS S3 settings
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = "django-example"
-AWS_S3_REGION_NAME = "us-east-1"
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-
-# Additional settings for private access
-AWS_DEFAULT_ACL = None
-AWS_QUERYSTRING_AUTH = True
-
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/private/media/"
+AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
 
 STORAGES = {
     "default": {
