@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_celery_beat",
     "django_celery_results",
+    "storages",
     "movies",
 ]
 
@@ -91,7 +92,9 @@ DATABASES = {
 }
 
 
+# ==============================
 # Password validation
+# ==============================
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -172,4 +175,12 @@ AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_AUTH = True
 
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/private/media/"
-DEFAULT_FILE_STORAGE = "myapp.storage_backends.PrivateMediaStorage"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django_example.storage_backends.PrivateMediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}

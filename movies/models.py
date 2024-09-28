@@ -4,14 +4,10 @@ import boto3
 from django.conf import settings
 from django.db import models
 
-from django_example.storage_backends import PrivateMediaStorage
-
 
 class Movie(models.Model):
     title = models.CharField(max_length=255)
-    file = models.FileField(
-        storage=PrivateMediaStorage(), upload_to="movies/", default=""
-    )
+    file = models.FileField(upload_to="movies/", default="")
     filename = models.CharField(max_length=255, default="")
     filesize = models.IntegerField(default=0)
     width = models.IntegerField(default=0)
