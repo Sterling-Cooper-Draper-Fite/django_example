@@ -164,17 +164,7 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 # ==============================
 
 # AWS S3 settings
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = "django-example"
-AWS_S3_REGION_NAME = "us-east-1"
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-
-# Additional settings for private access
-AWS_DEFAULT_ACL = None
-AWS_QUERYSTRING_AUTH = True
-
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/private/media/"
+AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
 
 STORAGES = {
     "default": {
