@@ -146,14 +146,29 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ==============================
 # Celery Configuration
 # ==============================
+
+# AWS SQS settings
+AWS_JOB_QUEUE_URL = os.environ["AWS_JOB_QUEUE_URL"]
+
+CELERY_BROKER_URL = "sqs://"
+
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    "polling_interval": 10,  # Polling interval in seconds
+    "visibility_timeout": 3600,  # Visibility timeout in seconds
+    "queue_url": AWS_JOB_QUEUE_URL,
+}
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "UTC"
+
+
 # save Celery task results in Django's database
 CELERY_RESULT_BACKEND = "django-db"
 
 # broker_connection_retry_on_startup
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-
-# This configures Redis as the datastore between Django + Celery
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_REDIS_URL", "redis://localhost:6379")
 
 # this allows you to schedule items in the Django admin.
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"

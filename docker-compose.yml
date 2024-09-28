@@ -27,11 +27,23 @@ services:
     environment:
       AWS_CONTAINER_CREDENTIALS_RELATIVE_URI: /creds
       AWS_STORAGE_BUCKET_NAME: ${AWS_STORAGE_BUCKET_NAME}
+      AWS_JOB_QUEUE_URL: ${AWS_JOB_QUEUE_URL}
     networks:
       credentials_network:
 
-volumes:
-  localstack_data:
+  worker:
+    build: .
+    command: celery -A django_example worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - ecs-local-endpoints
+    environment:
+      AWS_CONTAINER_CREDENTIALS_RELATIVE_URI: /creds
+      AWS_STORAGE_BUCKET_NAME: ${AWS_STORAGE_BUCKET_NAME}
+      AWS_JOB_QUEUE_URL: ${AWS_JOB_QUEUE_URL}
+    networks:
+      credentials_network:
 
 networks:
   # This special network is configured so that the local metadata
