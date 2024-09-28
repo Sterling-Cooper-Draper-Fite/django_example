@@ -17,7 +17,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# ==============================
 # Quick-start development settings - unsuitable for production
+# ==============================
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -29,7 +31,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# ==============================
 # Application definition
+# ==============================
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_celery_beat",
     "django_celery_results",
+    "storages",
     "movies",
 ]
 
@@ -74,7 +79,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "django_example.wsgi.application"
 
 
+# ==============================
 # Database
+# ==============================
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
@@ -85,7 +92,9 @@ DATABASES = {
 }
 
 
+# ==============================
 # Password validation
+# ==============================
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -104,7 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# ==============================
 # Internationalization
+# ==============================
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
@@ -116,17 +127,25 @@ USE_I18N = True
 USE_TZ = True
 
 
+# ==============================
 # Static files (CSS, JavaScript, Images)
+# ==============================
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
 
+
+# ==============================
 # Default primary key field type
+# ==============================
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+# ==============================
+# Celery Configuration
+# ==============================
 # save Celery task results in Django's database
 CELERY_RESULT_BACKEND = "django-db"
 
@@ -138,3 +157,30 @@ CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_REDIS_URL", "redis://localhost
 
 # this allows you to schedule items in the Django admin.
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
+
+
+# ==============================
+# Media files
+# ==============================
+
+# AWS S3 settings
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = "django-example"
+AWS_S3_REGION_NAME = "us-east-1"
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+# Additional settings for private access
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = True
+
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/private/media/"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django_example.storage_backends.PrivateMediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
