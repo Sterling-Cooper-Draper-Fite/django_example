@@ -7,8 +7,10 @@ Define custom environment variables in a docker-compose.override.yml file:
 services:
   server:
     environment:
-      AWS_STORAGE_BUCKET_NAME: my-bucket-name
-      AWS_JOB_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/123456789012/my-queue-name
+      EXAMPLE_STORAGE_BUCKET_NAME: my-bucket-name
+      EXAMPLE_JOB_QUEUE_URL: https://sqs.us-east-1.amazonaws.com/123456789012/my-queue-name
+      EXAMPLE_SERVER_TASK_ROLE_NAME: blah
+      EXAMPLE_WORKER_TASK_ROLE_NAME: blah
 ```
 
 Use `docker compose` to build and run the services:

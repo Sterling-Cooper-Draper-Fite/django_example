@@ -10,8 +10,11 @@ conda env update --file environment.yml --prune
 conda activate django-example
 
 # set required environment variables
-conda env config vars set AWS_STORAGE_BUCKET_NAME=my-bucket-name
-conda env config vars set AWS_JOB_QUEUE_URL=my-queue-url
+conda env config vars set EXAMPLE_MEDIA_BUCKET_NAME=my-bucket-name
+conda env config vars set EXAMPLE_JOB_QUEUE_NAME=my-queue-name
+conda env config vars set EXAMPLE_SERVER_TASK_ROLE_NAME=my-server-task-role-name
+conda env config vars set EXAMPLE_WORKER_TASK_ROLE_NAME=my-worker-task-role-name
+conda env config vars set DATABASE_URL=postgres://postgres:postgres@db:5432/django_example
 conda activate django-example
 
 # run database migrations

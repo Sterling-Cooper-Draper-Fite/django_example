@@ -148,22 +148,19 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Celery Configuration
 # ==============================
 
-# AWS SQS settings
-AWS_JOB_QUEUE_URL = os.environ["AWS_JOB_QUEUE_URL"]
-
 CELERY_BROKER_URL = "sqs://"
 
 CELERY_BROKER_TRANSPORT_OPTIONS = {
     "polling_interval": 10,  # Polling interval in seconds
     "visibility_timeout": 3600,  # Visibility timeout in seconds
-    "queue_url": AWS_JOB_QUEUE_URL,
 }
+
+CELERY_TASK_DEFAULT_QUEUE = os.environ["EXAMPLE_JOB_QUEUE_NAME"]
 
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
-
 
 # save Celery task results in Django's database
 CELERY_RESULT_BACKEND = "django-db"
@@ -174,17 +171,20 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 # this allows you to schedule items in the Django admin.
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
+# Define worker_state_db
+CELERY_WORKER_STATE_DB = os.path.join(os.getcwd(), "celery_worker_state.db")
+
 
 # ==============================
 # Media files
 # ==============================
 
-# AWS S3 settings
-AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
-
 STORAGES = {
     "default": {
         "BACKEND": "django_example.storage_backends.PrivateMediaStorage",
+        "OPTIONS": {
+            "bucket_name": os.environ["EXAMPLE_MEDIA_BUCKET_NAME"],
+        },
     },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",

@@ -10,9 +10,9 @@ services:
       - ecs-local-endpoints
       - db
     environment:
-      AWS_CONTAINER_CREDENTIALS_RELATIVE_URI: /creds
-      AWS_STORAGE_BUCKET_NAME: ${AWS_STORAGE_BUCKET_NAME}
-      AWS_JOB_QUEUE_URL: ${AWS_JOB_QUEUE_URL}
+      AWS_CONTAINER_CREDENTIALS_RELATIVE_URI: /role/${EXAMPLE_SERVER_TASK_ROLE_NAME}
+      EXAMPLE_MEDIA_BUCKET_NAME: ${EXAMPLE_MEDIA_BUCKET_NAME}
+      EXAMPLE_JOB_QUEUE_URL: ${EXAMPLE_JOB_QUEUE_URL}
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     networks:
       credentials_network:
@@ -26,9 +26,9 @@ services:
       - ecs-local-endpoints
       - db
     environment:
-      AWS_CONTAINER_CREDENTIALS_RELATIVE_URI: /creds
-      AWS_STORAGE_BUCKET_NAME: ${AWS_STORAGE_BUCKET_NAME}
-      AWS_JOB_QUEUE_URL: ${AWS_JOB_QUEUE_URL}
+      AWS_CONTAINER_CREDENTIALS_RELATIVE_URI: /role/${EXAMPLE_WORKER_TASK_ROLE_NAME}
+      EXAMPLE_MEDIA_BUCKET_NAME: ${EXAMPLE_MEDIA_BUCKET_NAME}
+      EXAMPLE_JOB_QUEUE_URL: ${EXAMPLE_JOB_QUEUE_URL}
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     networks:
       credentials_network:

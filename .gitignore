@@ -14,7 +14,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -91,3 +90,6 @@ yarn-error.log
 
 # Ignore docker overrides
 docker-compose.override.yml
+
+# Ignore celery worker database
+celery_worker_state.db
